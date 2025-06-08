@@ -5,14 +5,14 @@ const cors = require('cors');
 
 app.use(
   cors({
-    origin: 'https://main--roll-to-victory.netlify.app/', // <-- Replace with your actual Netlify URL
+    origin: 'https://main--roll-to-victory.netlify.app', // <-- Replace with your actual Netlify URL
     methods: ['GET', 'POST'],
   })
 );
 
 const io = require('socket.io')(http, {
   cors: {
-    origin: 'https://main--roll-to-victory.netlify.app/', // <-- Replace with your actual Netlify URL
+    origin: 'https://main--roll-to-victory.netlify.app', // <-- Replace with your actual Netlify URL
     methods: ['GET', 'POST'],
   },
 });
