@@ -1,7 +1,7 @@
 'use strict';
 
 // Socket.IO connection
-const socket = io('https://main--roll-to-victory.netlify.app/');
+const socket = io('https://roll-to-victory.onrender.com/');
 let gameId = null;
 let playerNumber = null;
 
