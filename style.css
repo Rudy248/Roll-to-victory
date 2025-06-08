@@ -104,10 +104,17 @@ main {
 }
 
 /* ABSOLUTE POSITIONED ELEMENTS */
-.btn {
+
+/* Only absolutely position in-game buttons, not all .btn */
+.btn--new,
+.btn--roll,
+.btn--hold {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+}
+
+.btn {
   color: #444;
   background: none;
   border: none;
@@ -131,6 +138,12 @@ main {
   font-size: 2.4rem;
   display: inline-block;
   margin-right: 0.7rem;
+}
+
+#create-game,
+#join-game,
+#play-offline {
+  transform: none;
 }
 
 .btn--new {
@@ -477,4 +490,55 @@ main {
   #powerup-2 {
     left: 80%; /* Adjust to fit all power-ups */
   }
+}
+
+.multiplayer-menu {
+  margin: 2rem 0;
+  padding: 1rem;
+  text-align: center;
+  border: 2px solid #c7365f;
+  border-radius: 1rem;
+}
+
+.multiplayer-menu .btn {
+  margin: 1rem;
+  padding: 0.7rem 1.4rem;
+  font-size: 1.2rem;
+  background-color: #c7365f;
+  color: #fff;
+  border: none;
+  border-radius: 50rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.multiplayer-menu .btn:hover {
+  background-color: #b32e54;
+}
+
+.join-game {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.join-game input {
+  padding: 0.7rem;
+  font-size: 1.2rem;
+  border: 2px solid #c7365f;
+  border-radius: 50rem;
+  text-align: center;
+  width: 80%;
+  max-width: 300px;
+}
+
+#game-id-display {
+  font-size: 1.2rem;
+  color: #c7365f;
+  margin: 1rem 0;
+  padding: 0.5rem;
+  background-color: #f8f8f8;
+  border-radius: 0.5rem;
 }

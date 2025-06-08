@@ -9,22 +9,11 @@
       src="https://kit.fontawesome.com/6185388766.js"
       crossorigin="anonymous"
     ></script>
-    <script src="/socket.io/socket.io.js"></script>
     <title>Roll to victory</title>
   </head>
   <body>
     <section id="instructions" class="instructions">
       <h1>Roll to victory!</h1>
-
-      <div class="multiplayer-menu">
-        <button id="create-game" class="btn">Create New Game</button>
-        <div class="join-game">
-          <input type="text" id="game-id" placeholder="Enter Game ID" />
-          <button id="join-game" class="btn">Join Game</button>
-        </div>
-        <p id="game-id-display" class="hidden"></p>
-        <button id="play-offline" class="btn">Play Offline</button>
-      </div>
 
       <ul>
         <li>Two players compete to reach 100 points first.</li>
@@ -44,6 +33,7 @@
           can give you an advantage or hinder your opponent!
         </li>
       </ul>
+      <button id="start-game" class="start-btn">Start Game</button>
     </section>
 
     <main id="game" class="hidden">
@@ -84,16 +74,6 @@
       <button class="btn btn--roll">🎲 Roll dice</button>
       <button class="btn btn--hold">📥 Hold</button>
     </main>
-    <script src="script.js"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', function () {
-        const btn = document.getElementById('play-offline');
-        if (btn) {
-          btn.addEventListener('click', function () {
-            window.location.href = 'offline_index.html';
-          });
-        }
-      });
-    </script>
+    <script src="offline_script.js"></script>
   </body>
 </html>
