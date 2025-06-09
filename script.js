@@ -4,6 +4,7 @@
 const socket = io('https://roll-to-victory.onrender.com');
 let gameId = null;
 let playerNumber = null;
+let createGameTimeout = null; // Add timeout variable at higher scope
 
 //Selecting elements
 const score0El = document.querySelector('#score--0');
@@ -41,6 +42,25 @@ let powerupUsed = [false, false];
 
 // Multiplayer event handlers
 createGameBtn.addEventListener('click', () => {
+  // Show loading state
+  const spinner = document.querySelector('.loading-spinner');
+  const loadingText = document.querySelector('.loading-text');
+  const buttons = document.querySelectorAll('.btn');
+
+  spinner.style.display = 'block';
+  loadingText.style.display = 'block';
+  buttons.forEach(btn => btn.classList.add('buttons-disabled'));
+
+  // Set a timeout to handle server wake-up delay
+  createGameTimeout = setTimeout(() => {
+    spinner.style.display = 'none';
+    loadingText.style.display = 'none';
+    buttons.forEach(btn => btn.classList.remove('buttons-disabled'));
+    displayMessage(
+      'Server is taking longer than usual to respond. Please try again.'
+    );
+  }, 60000); // 60 seconds timeout
+
   socket.emit('createGame');
 });
 
@@ -57,6 +77,21 @@ joinGameBtn.addEventListener('click', () => {
 
 // Socket event handlers
 socket.on('gameCreated', id => {
+  // Clear the timeout
+  if (createGameTimeout) {
+    clearTimeout(createGameTimeout);
+    createGameTimeout = null;
+  }
+
+  // Hide loading state
+  const spinner = document.querySelector('.loading-spinner');
+  const loadingText = document.querySelector('.loading-text');
+  const buttons = document.querySelectorAll('.btn');
+
+  spinner.style.display = 'none';
+  loadingText.style.display = 'none';
+  buttons.forEach(btn => btn.classList.remove('buttons-disabled'));
+
   console.log('Game created with ID:', id);
   gameId = id;
   playerNumber = 0; // First player is always player 0
@@ -175,7 +210,25 @@ socket.on('powerupUsed', data => {
   }
 
   // Show the powerup message
-  displayMessage(data.message);
+  let powerupMessage = '';
+  if (data.powerupIndex === 0) {
+    powerupMessage = 'Better luck next time! No effect.';
+  } else if (data.powerupIndex === 1) {
+    // Gaining points
+    if (data.playerIndex === playerNumber) {
+      powerupMessage = 'You gained 10 points!';
+    } else {
+      powerupMessage = 'Your opponent gained 10 points!';
+    }
+  } else if (data.powerupIndex === 2) {
+    // Losing points
+    if (data.playerIndex === playerNumber) {
+      powerupMessage = "You reduced your opponent's score by 10 points!";
+    } else {
+      powerupMessage = 'Your score was reduced by 10 points!';
+    }
+  }
+  displayMessage(powerupMessage);
 });
 
 socket.on('gameOver', data => {
@@ -377,3 +430,24 @@ function init() {
 
 // Initialize the game
 init();
+
+// Add error handling for connection issues
+socket.on('connect_error', error => {
+  // Clear the timeout if it exists
+  if (createGameTimeout) {
+    clearTimeout(createGameTimeout);
+    createGameTimeout = null;
+  }
+
+  // Hide loading state
+  const spinner = document.querySelector('.loading-spinner');
+  const loadingText = document.querySelector('.loading-text');
+  const buttons = document.querySelectorAll('.btn');
+
+  spinner.style.display = 'none';
+  loadingText.style.display = 'none';
+  buttons.forEach(btn => btn.classList.remove('buttons-disabled'));
+
+  displayMessage('Connection error. Please try again.');
+  console.error('Connection error:', error);
+});

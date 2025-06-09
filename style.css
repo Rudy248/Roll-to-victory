@@ -134,12 +134,6 @@ main {
   box-shadow: 0 1.75rem 3.5rem rgba(0, 0, 0, 0.1);
 }
 
-.btn::first-letter {
-  font-size: 2.4rem;
-  display: inline-block;
-  margin-right: 0.7rem;
-}
-
 #create-game,
 #join-game,
 #play-offline {
@@ -541,4 +535,36 @@ main {
   padding: 0.5rem;
   background-color: #f8f8f8;
   border-radius: 0.5rem;
+}
+
+.loading-spinner {
+  display: none;
+  width: 50px;
+  height: 50px;
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-text {
+  display: none;
+  text-align: center;
+  color: #666;
+  margin-top: 10px;
+}
+
+.buttons-disabled {
+  opacity: 0.6;
+  pointer-events: none;
 }
