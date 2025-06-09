@@ -34,6 +34,7 @@ const joinGameBtn = document.getElementById('join-game');
 const gameIdInput = document.getElementById('game-id');
 const gameIdDisplay = document.getElementById('game-id-display');
 const joiningBtn = document.getElementById('joining-btn');
+const waitingForPlayer = document.getElementById('waiting-for-player');
 
 // New back button elements
 const backToInitialMenuBtn = document.getElementById('back-to-initial-menu');
@@ -136,7 +137,7 @@ socket.on('gameCreated', id => {
   playerNumber = 0; // First player is always player 0
   gameIdDisplay.textContent = `Game ID: ${id}`;
   gameIdDisplay.classList.remove('hidden');
-  displayMessage('Waiting for opponent to join...');
+  waitingForPlayer.classList.remove('hidden');
 });
 
 socket.on('gameStarted', gameState => {
@@ -468,6 +469,7 @@ function init() {
   playerNumber = null;
   gameIdDisplay.classList.add('hidden');
   gameIdInput.value = '';
+  waitingForPlayer.classList.add('hidden');
 
   // Reset player labels
   document.getElementById('name--0').textContent = 'Player 1';
@@ -476,7 +478,7 @@ function init() {
   // Show instructions
   instructions.classList.remove('hidden');
   game.classList.add('hidden');
-
+  initialMenu.classList.remove('hidden');
   // Disable game buttons
   btnRoll.disabled = true;
   btnHold.disabled = true;
