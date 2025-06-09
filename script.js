@@ -480,7 +480,7 @@ function init() {
   game.classList.add('hidden');
   initialMenu.classList.remove('hidden');
   joinGameBtn.classList.add('hidden');
-  multiplayerMenu.classList.remove('hidden');
+  multiplayerMenu.classList.add('hidden');
   // Disable game buttons
   btnRoll.disabled = true;
   btnHold.disabled = true;
