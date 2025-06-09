@@ -28,12 +28,6 @@ let activePlayer;
 let playing;
 let powerupUsed;
 
-startGameBtn.addEventListener('click', function () {
-  // Hide the instruction page and show the game
-  instructions.classList.add('hidden');
-  game.classList.remove('hidden');
-});
-
 const init = function () {
   // while (!player1Name) {
   //   var player1Name = prompt('Enter player 1 name: ');

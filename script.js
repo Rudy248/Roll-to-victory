@@ -1,7 +1,7 @@
 'use strict';
 
 // Socket.IO connection
-const socket = io('https://roll-to-victory.onrender.com');
+const socket = io('https://roll-to-victory.onrender.com/');
 let gameId = null;
 let playerNumber = null;
 let createGameTimeout = null; // Add timeout variable at higher scope
@@ -40,7 +40,22 @@ let activePlayer = 0;
 let playing = false;
 let powerupUsed = [false, false];
 
+// New menu elements
+const initialMenu = document.querySelector('.initial-menu');
+const playWithFriendBtn = document.getElementById('play-with-friend-btn');
+const passAndPlayBtn = document.getElementById('pass-and-play-btn');
+const multiplayerMenu = document.querySelector('.multiplayer-menu');
+
 // Multiplayer event handlers
+playWithFriendBtn.addEventListener('click', () => {
+  initialMenu.classList.add('hidden');
+  multiplayerMenu.classList.remove('hidden');
+});
+
+passAndPlayBtn.addEventListener('click', () => {
+  window.location.href = 'offline_index.html';
+});
+
 createGameBtn.addEventListener('click', () => {
   // Show loading state
   const spinner = document.querySelector('.loading-spinner');
@@ -117,6 +132,8 @@ socket.on('gameStarted', gameState => {
   updateUI();
   instructions.classList.add('hidden');
   game.classList.remove('hidden');
+  initialMenu.classList.add('hidden'); // Ensure initial menu is hidden on game start
+  multiplayerMenu.classList.add('hidden'); // Ensure multiplayer menu is hidden on game start
   displayMessage(`Game started! You are Player ${playerNumber + 1}`);
 });
 
@@ -172,8 +189,8 @@ socket.on('powerupAvailable', player => {
         hidePowerupUI();
       };
     });
-
-    displayMessage('Power-up available! Choose a box to reveal your power-up');
+  } else {
+    displayMessage('Opponent is selecting a power-up...');
   }
 });
 
@@ -212,7 +229,11 @@ socket.on('powerupUsed', data => {
   // Show the powerup message
   let powerupMessage = '';
   if (data.powerupIndex === 0) {
-    powerupMessage = 'Better luck next time! No effect.';
+    if (data.playerIndex === playerNumber) {
+      powerupMessage = 'Better luck next time! No effect.';
+    } else {
+      powerupMessage = 'Opponent used a power-up, but it had no effect.';
+    }
   } else if (data.powerupIndex === 1) {
     // Gaining points
     if (data.playerIndex === playerNumber) {
@@ -275,6 +296,14 @@ function updateUI() {
 
   btnRoll.disabled = !playing || !isPlayerTurn;
   btnHold.disabled = !playing || !isPlayerTurn;
+
+  if (!playing || !isPlayerTurn) {
+    btnRoll.classList.add('hidden');
+    btnHold.classList.add('hidden');
+  } else {
+    btnRoll.classList.remove('hidden');
+    btnHold.classList.remove('hidden');
+  }
 
   // Update player labels based on player number
   if (playerNumber === 0) {

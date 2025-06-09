@@ -16,7 +16,14 @@
     <section id="instructions" class="instructions">
       <h1>Roll to victory!</h1>
 
-      <div class="multiplayer-menu">
+      <div class="initial-menu">
+        <button id="play-with-friend-btn" class="btn">
+          Play with a Friend
+        </button>
+        <button id="pass-and-play-btn" class="btn">Pass and Play</button>
+      </div>
+
+      <div class="multiplayer-menu hidden">
         <button id="create-game" class="btn">Create New Game</button>
         <div class="join-game">
           <input type="text" id="game-id" placeholder="Enter Game ID" />
@@ -25,7 +32,6 @@
         <div class="loading-spinner"></div>
         <p class="loading-text">Creating game, please wait...</p>
         <p id="game-id-display" class="hidden"></p>
-        <button id="play-offline" class="btn">Play Offline</button>
       </div>
 
       <ul>
@@ -89,7 +95,7 @@
     <script src="script.js"></script>
     <script>
       document.addEventListener('DOMContentLoaded', function () {
-        const btn = document.getElementById('play-offline');
+        const btn = document.getElementById('pass-and-play-btn');
         if (btn) {
           btn.addEventListener('click', function () {
             window.location.href = 'offline_index.html';

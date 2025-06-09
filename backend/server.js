@@ -5,14 +5,14 @@ const cors = require('cors');
 
 app.use(
   cors({
-    origin: 'https://main--roll-to-victory.netlify.app', // <-- Replace with your actual Netlify URL
+    origin: 'https://main--roll-to-victory.netlify.app', // Allow all origins during development
     methods: ['GET', 'POST'],
   })
 );
 
 const io = require('socket.io')(http, {
   cors: {
-    origin: 'https://main--roll-to-victory.netlify.app', // <-- Replace with your actual Netlify URL
+    origin: 'https://main--roll-to-victory.netlify.app', // Allow all origins during development
     methods: ['GET', 'POST'],
   },
 });
@@ -114,10 +114,8 @@ io.on('connection', socket => {
       game.scores[game.activePlayer] >= 30 &&
       !game.powerupUsed[game.activePlayer]
     ) {
-      io.to(game.players[game.activePlayer]).emit(
-        'powerupAvailable',
-        game.activePlayer
-      );
+      io.to(gameId).emit('powerupAvailable', game.activePlayer);
+      return;
     }
 
     // Check for winner
@@ -169,7 +167,7 @@ io.on('connection', socket => {
     } else if (powerupIndex === 2) {
       // Opponent loses 10 points
       const opponentIndex = playerIndex === 0 ? 1 : 0;
-      game.scores[opponentIndex] = Math.max(0, game.scores[opponentIndex] - 10);
+      game.scores[opponentIndex] -= 10;
       powerupMessage = 'Opponent lost 10 points!';
     }
 
@@ -185,6 +183,16 @@ io.on('connection', socket => {
       games.delete(gameId);
       return;
     }
+
+    // Now switch active player
+    game.activePlayer = game.activePlayer === 0 ? 1 : 0;
+
+    // Emit held event to resume turn
+    io.to(gameId).emit('held', {
+      scores: game.scores,
+      currentScores: game.currentScores,
+      activePlayer: game.activePlayer,
+    });
 
     // Emit powerup used event with updated scores to all players
     io.to(gameId).emit('powerupUsed', {
