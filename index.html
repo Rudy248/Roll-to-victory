@@ -24,14 +24,18 @@
       </div>
 
       <div class="multiplayer-menu hidden">
+        <button id="back-to-initial-menu" class="btn btn--back">🡰</button>
         <button id="create-game" class="btn">Create New Game</button>
-        <div class="join-game">
-          <input type="text" id="game-id" placeholder="Enter Game ID" />
-          <button id="join-game" class="btn">Join Game</button>
-        </div>
+
+        <button id="joining-btn" class="btn">Join Game</button>
         <div class="loading-spinner"></div>
         <p class="loading-text">Creating game, please wait...</p>
         <p id="game-id-display" class="hidden"></p>
+      </div>
+      <div class="join-game hidden">
+        <button id="back-to-multiplayer-menu" class="btn btn--back">🡰</button>
+        <input type="text" id="game-id" placeholder="Enter Game ID" />
+        <button id="join-game" class="btn">Join Game</button>
       </div>
 
       <ul>

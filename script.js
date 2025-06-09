@@ -33,6 +33,13 @@ const createGameBtn = document.getElementById('create-game');
 const joinGameBtn = document.getElementById('join-game');
 const gameIdInput = document.getElementById('game-id');
 const gameIdDisplay = document.getElementById('game-id-display');
+const joiningBtn = document.getElementById('joining-btn');
+
+// New back button elements
+const backToInitialMenuBtn = document.getElementById('back-to-initial-menu');
+const backToMultiplayerMenuBtn = document.getElementById(
+  'back-to-multiplayer-menu'
+);
 
 let scores = [0, 0];
 let currentScores = [0, 0];
@@ -45,6 +52,7 @@ const initialMenu = document.querySelector('.initial-menu');
 const playWithFriendBtn = document.getElementById('play-with-friend-btn');
 const passAndPlayBtn = document.getElementById('pass-and-play-btn');
 const multiplayerMenu = document.querySelector('.multiplayer-menu');
+const joinGame = document.querySelector('.join-game');
 
 // Multiplayer event handlers
 playWithFriendBtn.addEventListener('click', () => {
@@ -54,6 +62,22 @@ playWithFriendBtn.addEventListener('click', () => {
 
 passAndPlayBtn.addEventListener('click', () => {
   window.location.href = 'offline_index.html';
+});
+
+joiningBtn.addEventListener('click', () => {
+  multiplayerMenu.classList.add('hidden');
+  joinGame.classList.remove('hidden');
+});
+
+// Back button event handlers
+backToInitialMenuBtn.addEventListener('click', () => {
+  multiplayerMenu.classList.add('hidden');
+  initialMenu.classList.remove('hidden');
+});
+
+backToMultiplayerMenuBtn.addEventListener('click', () => {
+  joinGame.classList.add('hidden');
+  multiplayerMenu.classList.remove('hidden');
 });
 
 createGameBtn.addEventListener('click', () => {
@@ -134,6 +158,7 @@ socket.on('gameStarted', gameState => {
   game.classList.remove('hidden');
   initialMenu.classList.add('hidden'); // Ensure initial menu is hidden on game start
   multiplayerMenu.classList.add('hidden'); // Ensure multiplayer menu is hidden on game start
+  joinGameBtn.classList.add('hidden');
   displayMessage(`Game started! You are Player ${playerNumber + 1}`);
 });
 

@@ -50,6 +50,11 @@ io.on('connection', socket => {
       return;
     }
 
+    if (game.players.includes(socket.id)) {
+      socket.emit('error', 'You cannot join your own game.');
+      return;
+    }
+
     // Add player to game
     game.players.push(socket.id);
     socket.join(gameId);
